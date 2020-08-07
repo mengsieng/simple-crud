@@ -1,10 +1,12 @@
 const router = require('express').Router()
 const auth = require('./auth/auth.route')
 
-router.use('/auth', auth)
-
 router.get('/', (req, res) => {
-    res.send('helelfhs')
+    res.json({
+        message: 'Welcome braber'
+    })
 })
+
+router.use('/auth', auth)
 
 module.exports = router

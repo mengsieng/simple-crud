@@ -10,4 +10,4 @@ const connection = knex(connectionConfig)
 
 Model.knex(connection)
 
-module.exports = connection
+// module.exports = connection
