@@ -13,4 +13,4 @@ function sign(payload) {
 
 module.exports = {
     sign,
-}
+};

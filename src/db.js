@@ -1,5 +1,5 @@
 const knex = require('knex')
-const { Model } = require('objection')
+const { Model } = require('objection');
 
 const knexConfig = require('../knexfile')
 
@@ -10,4 +10,4 @@ const connection = knex(connectionConfig)
 
 Model.knex(connection)
 
-// module.exports = connection
+module.exports = connection

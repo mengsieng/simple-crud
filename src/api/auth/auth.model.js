@@ -5,6 +5,10 @@ class User extends Model {
     static get tableName() {
         return tableNames.user
     }
+    static get idColumn() {
+        return 'user_id';
+    }
 }
 
-module.exports = User
+
+module.exports = User 

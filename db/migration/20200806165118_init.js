@@ -5,24 +5,20 @@ exports.up = async (knex) => {
     return await knex.schema.createTable(tableName.role, (table) => {
         table.increments('role_id').notNullable()
         table.string('role', 100)
-    }).createTable(tableName.info, (table) => {
-        table.increments('info_id').notNullable()
+    }).createTable(tableName.user, (table) => {
+        table.increments('user_id').notNullable()
+        table.string('username').notNullable()
+        table.string('password', 127).notNullable()
         table.string('name')
         table.date('DOB')
         table.text('address')
         table.string('phonenumber', 15)
         table.text('profileUrl')
-    }).createTable(tableName.user, (table) => {
-        table.increments('user_id').notNullable()
-        table.string('username').notNullable()
-        table.string('password', 127).notNullable()
         table.integer('role_id').references('role_id').inTable(tableName.role).notNullable()
-        table.integer('info_id').references('info_id').inTable(tableName.info).notNullable()
     })
 };
 
 exports.down = async (knex) => {
-    await knex.schema.dropTable(tableName.user)
     await knex.schema.dropTable(tableName.role)
-    await knex.schema.dropTable(tableName.info)
+    await knex.schema.dropTable(tableName.user)
 };
