@@ -2,6 +2,7 @@ const express = require('express')
 const api = require('./api/index')
 const helmet = require('helmet')
 const morgan = require('morgan')
+// const passport = require('passport-http-bearer')
 require('dotenv').config()
 
 const middlewares = require('./middleware')
@@ -20,12 +21,18 @@ app.get('/', (req, res) => {
     });
 });
 
+
+
 //This is route from other end point
+app.use(middlewares.responseData)
 app.use('/api/v1', api)
 
 //This is error catch middleware
-app.use(middlewares.errorHandler)
 app.use(middlewares.notFound)
+app.use(middlewares.errorHandler)
 app.use(connection)
+
+
+// passport.use(new BearerStrategy((token, done) => { }))
 
 module.exports = app

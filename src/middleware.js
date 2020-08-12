@@ -13,18 +13,30 @@ function notFound(req, res, next) {
     next(error)
 }
 
+function responseData(req, res, next) {
+    console.log(res);
+    next()
+}
+
 function errorHandler(error, req, res, next) {
     const statusCode = res.statusCode === 200 ? (errorTypes[error.name] || 500) : res.statusCode
-    res.status(statusCode)
+    if (!error) {
+        next();
+    }
+
+    res.status(statusCode);
     res.json({
         status: statusCode,
         message: errorMessage[error.name] || error.message,
         stack: process.env.NODE_ENV === 'production' ? '🥞' : 'dev',
         errors: error.errors || undefined,
     })
+
 }
+
 
 module.exports = {
     notFound,
     errorHandler,
+    responseData
 }
