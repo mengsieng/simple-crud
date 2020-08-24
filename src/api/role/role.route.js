@@ -17,10 +17,7 @@ router.post('/create', async (req, res, next) => {
 })
 
 router.get('/listAll', async (req, res) => {
-    // const data = await connection.select('*').from(tableNames.role)
     const data = await Role.query().select('*')
-
-
     res.json({
         data
     })

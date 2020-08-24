@@ -2,6 +2,7 @@ const express = require('express')
 const api = require('./api/index')
 const helmet = require('helmet')
 const morgan = require('morgan')
+const mung = require('express-mung')
 // const passport = require('passport-http-bearer')
 require('dotenv').config()
 
@@ -24,7 +25,13 @@ app.get('/', (req, res) => {
 
 
 //This is route from other end point
-app.use(middlewares.responseData)
+app.use(mung.json(
+    function transform(body, req, res) {
+        //adds mungMessage to every API response
+        body.status = "1";
+        return body;
+    }
+));
 app.use('/api/v1', api)
 
 //This is error catch middleware
