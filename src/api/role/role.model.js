@@ -6,7 +6,7 @@ class Role extends Model {
         return tableNames.role
     }
     static get idColumn() {
-        return 'role_id'
+        return 'id'
     }
 }
 module.exports = Role 

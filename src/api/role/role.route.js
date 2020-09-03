@@ -10,23 +10,26 @@ router.post('/create', async (req, res, next) => {
             res.status(400).json({ message: 'This role already exist' })
         }
         const newRole = await Role.query().insert(role)
-        res.json(newRole)
+        res.json({ data: newRole })
     } catch (error) {
         next(error)
     }
 })
 
 router.get('/listAll', async (req, res) => {
-    const data = await Role.query().select('*')
-    res.json({
-        data
-    })
+    try {
+        const data = await Role.query().select('*')
+        res.json({ data })
+    } catch (e) {
+        next(e)
+    }
+
 })
 
 router.delete('/delete', async (req, res) => {
-    const role_id = req.query
-    const data = await Role.query().delete().where(role_id)
-    if (data === '1') {
+    const id = req.query
+    const data = await Role.query().delete().where(id)
+    if (data === 1) {
         res.json({ message: "Delete Complete" })
     }
     res.json({ message: 'Not Complete' })

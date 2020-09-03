@@ -4,9 +4,12 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      database: process.env.POSTGRES_DB,
+      port: '5432',
       user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      host: process.env.POSTGRES_HOST,
+      ssl: { rejectUnauthorized: false }
     },
     migrations: {
       directory: './db/migration'

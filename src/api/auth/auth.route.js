@@ -21,14 +21,15 @@ let schema = yup.object().shape({
     address: yup.string(),
     phonenumber: yup.string().min(9).max(20),
     username: yup.string().required(),
-    role: yup.number()
+    role_id: yup.number().required()
 })
 
 router.get('/getUserProfile', jwtChecker.checkToken, async (req, res) => {
-    const existUser = await User.query().select('name', 'DOB', 'address', 'phonenumber', 'profileUrl').where("user_id", req.decoded.id).first()
-
+    const data = await User.query().select('name', 'DOB', 'address', 'phonenumber', 'profileUrl', 'role.role')
+        .join('role', 'user.role_id', '=', 'role.id')
+        .where("user.id", req.decoded.id).first()
     res.json({
-        message: existUser
+        data
     })
 })
 
@@ -79,7 +80,7 @@ router.post('/signIn', async (req, res, next) => {
             res.status(403).json({ message: 'Wrong username or password' })
         }
         const payload = {
-            id: user.user_id,
+            id: user.id,
             username: user.username,
         }
         const token = await sign.sign(payload)

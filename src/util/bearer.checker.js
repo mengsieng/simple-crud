@@ -21,7 +21,7 @@ let checkToken = (req, res, next) => {
                 });
             } else {
                 req.decoded = decoded;
-                // console.log(decoded);
+                // console.log('This is checker', decoded);
                 next();
             }
         });

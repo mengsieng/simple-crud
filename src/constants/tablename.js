@@ -6,6 +6,5 @@ module.exports = {
     status: 'status',
     room: 'room',
     roomType: 'roomType',
-    bed: 'bed',
     roomStatus: 'roomStatus',
 }
