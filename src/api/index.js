@@ -5,6 +5,7 @@ const role = require('./role/role.route')
 const room = require('./room/room.route')
 const roomType = require('./room/room.type.route')
 const roomStatus = require('./room/room.status.route')
+const booking = require('./booking/booking.route')
 
 const middleware = require('../util/bearer.checker')
 
@@ -19,5 +20,6 @@ router.use('/role', middleware.checkToken, role)
 router.use('/room', middleware.checkToken, room)
 router.use('/roomType', middleware.checkToken, roomType)
 router.use('/roomStatus', middleware.checkToken, roomStatus)
+router.use('/booking', middleware.checkToken, booking)
 
 module.exports = router

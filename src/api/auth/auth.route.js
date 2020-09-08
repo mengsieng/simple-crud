@@ -18,15 +18,13 @@ let schema = yup.object().shape({
         .required(),
     name: yup.string().required(),
     DOB: yup.date(),
-    address: yup.string(),
+    gender: yup.string().required(),
     phonenumber: yup.string().min(9).max(20),
     username: yup.string().required(),
-    role_id: yup.number().required()
 })
 
 router.get('/getUserProfile', jwtChecker.checkToken, async (req, res) => {
-    const data = await User.query().select('name', 'DOB', 'address', 'phonenumber', 'profileUrl', 'role.role')
-        .join('role', 'user.role_id', '=', 'role.id')
+    const data = await User.query().select('name', 'DOB', 'gender', 'phonenumber', 'profileUrl')
         .where("user.id", req.decoded.id).first()
     res.json({
         data
@@ -36,7 +34,7 @@ router.get('/getUserProfile', jwtChecker.checkToken, async (req, res) => {
 
 
 router.post('/signUp', async (req, res, next) => {
-    const { username, password, name, role_id, DOB, address, phonenumber, profileUrl } = req.body
+    const { username, password, name, DOB, gender, phonenumber, profileUrl } = req.body
     try {
         //This is the validate the body
         await schema.validate(req.body, {
@@ -51,7 +49,7 @@ router.post('/signUp', async (req, res, next) => {
         }
         const hashedPassword = await bcrypt.hash(password, 12)
         const insertData = await User.query().insert({
-            username, name, role_id, DOB, address, phonenumber, profileUrl,
+            username, name, DOB, gender, phonenumber, profileUrl,
             password: hashedPassword,
         })
         //Making the json web token
@@ -59,9 +57,10 @@ router.post('/signUp', async (req, res, next) => {
             id: insertData.id,
             username: insertData.username,
         }
+        delete insertData.password
         const token = await sign.sign(payload)
         res.json(
-            { token }
+            { token, data: insertData }
         )
     } catch (e) {
         next(e)
@@ -83,8 +82,9 @@ router.post('/signIn', async (req, res, next) => {
             id: user.id,
             username: user.username,
         }
+        delete user.password
         const token = await sign.sign(payload)
-        res.json({ token })
+        res.json({ data: user, token })
     } catch (error) {
         next(error)
     }

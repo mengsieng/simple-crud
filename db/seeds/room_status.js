@@ -6,9 +6,8 @@ exports.seed = function (knex) {
     .then(function () {
       // Inserts seed entries
       return knex(tableNames.roomStatus).insert([
-        { status: 'free' },
-        { status: 'booking' },
-        { status: 'busy' }
+        { status: 'FREE' },
+        { status: 'BOOKING' },
       ]);
     });
 };

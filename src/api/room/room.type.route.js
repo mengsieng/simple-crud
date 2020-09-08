@@ -11,8 +11,9 @@ let schema = yup.object().shape({
 
 router.get('/listAll', async (req, res, next) => {
     try {
-        const data = await RoomType.query().select('*')
-        console.log('This data get from table', data);
+        const data = await RoomType.query().select('roomType.id', 'roomType.type', 'roomType.description',
+            'roomType.price', 'roomType.bed')
+            .leftJoin('roomImage', 'roomType.image_id', '=', 'roomImage.id')
         res.json({ data })
     } catch (e) {
         next(e)
@@ -21,7 +22,7 @@ router.get('/listAll', async (req, res, next) => {
 
 router.post('/create', async (req, res, next) => {
 
-    const { type, price, bed } = req.body
+    const { type, price, bed, description } = req.body
     try {
         await schema.validate(req.body, {
             abortEarly: false
@@ -30,7 +31,7 @@ router.post('/create', async (req, res, next) => {
         if (existRoomType) {
             res.status(400).json({ message: 'This role already exist' })
         } else {
-            const data = await RoomType.query().insert({ type, price, bed })
+            const data = await RoomType.query().insert({ type, price, bed, description })
             res.json({ data })
         }
     } catch (e) {

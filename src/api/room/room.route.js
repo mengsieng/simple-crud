@@ -9,12 +9,14 @@ let schema = yup.object().shape({
 })
 
 router.get('/listAll', async (req, res, next) => {
+    const { roomtype_id } = req.query
     try {
-        await Room.query().select('room.id', 'room.number', 'roomType.type', 'roomType.price', 'roomStatus.status')
+        await Room.query().select('room.id', 'room.number', 'roomType.type', 'roomType.price', 'roomStatus.status', 'imageUrl')
             .join('roomType', 'room.roomtype_id', '=', 'roomType.id')
-            .join('roomStatus', 'room.roomstatus_id', '=', 'roomStatus.id').then(data => {
+            .join('roomStatus', 'room.roomstatus_id', '=', 'roomStatus.id')
+            .where('room.roomtype_id', '=', roomtype_id)
+            .then(data => {
                 res.status(200).json({ data })
-
             })
     } catch (e) {
         next(e)

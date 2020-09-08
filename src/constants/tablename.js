@@ -1,10 +1,11 @@
 module.exports = {
     user: 'user',
-    role: 'role',
     info: 'info',
     booking: 'booking',
     status: 'status',
     room: 'room',
     roomType: 'roomType',
     roomStatus: 'roomStatus',
+    roomImage: 'roomImage',
+    bookingStatus: 'bookingStatus'
 }
